@@ -45,12 +45,12 @@ public class Player : MonoBehaviour
     }
     void Movement()
     {
-        float horizontalInput = Input.GetAxisRaw("Horizontal") * Time.deltaTime * movementSpeed;
+        float horizontalInput = Input.GetAxisRaw("Horizontal") * movementSpeed;
         FlipSprite(horizontalInput);
 
         if (Input.GetKeyDown(KeyCode.Space) && canJump)
         {
-            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce * Time.deltaTime);
+            rigidbody2D.velocity = new Vector2(rigidbody2D.velocity.x, jumpForce);
             playerAnimation.Jump(true);
             canJump = false;
         }
