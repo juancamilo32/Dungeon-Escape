@@ -4,48 +4,9 @@ using UnityEngine;
 
 public class MossGiant : Enemy
 {
-
-    private Vector3 currentTarget;
-
-    Animator animator;
-
-    SpriteRenderer spriteRenderer;
-
-    private void Start()
+    public override void Init()
     {
-        animator = GetComponentInChildren<Animator>();
-        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        base.Init();
+        speed = 1.5f;
     }
-
-    public override void Update()
-    {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
-        {
-            return;
-        }
-        Movement();
-    }
-
-    void Movement()
-    {
-        if (transform.position == pointA.position)
-        {
-            currentTarget = pointB.position;
-            spriteRenderer.flipX = false;
-        }
-        else if (transform.position == pointB.position)
-        {
-            currentTarget = pointA.position;
-            spriteRenderer.flipX = true;
-        }
-
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
-
-        if (transform.position == currentTarget)
-        {
-            animator.SetTrigger("Idle");
-        }
-
-    }
-
 }

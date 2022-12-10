@@ -7,17 +7,54 @@ public abstract class Enemy : MonoBehaviour
     [SerializeField]
     protected int health;
     [SerializeField]
-    protected int speed;
+    protected float speed;
     [SerializeField]
     protected int gems;
     [SerializeField]
     protected Transform pointA, pointB;
+    protected Vector3 currentTarget;
+    protected Animator animator;
+    protected SpriteRenderer spriteRenderer;
 
-    public virtual void Attack()
+    public virtual void Init()
     {
-        Debug.Log("Attack");
+        animator = GetComponentInChildren<Animator>();
+        spriteRenderer = GetComponentInChildren<SpriteRenderer>();
     }
 
-    public abstract void Update();
+    private void Start()
+    {
+        Init();
+    }
+
+    public void Update()
+    {
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        {
+            return;
+        }
+        Movement();
+    }
+
+    public virtual void Movement()
+    {
+        if (transform.position == pointA.position)
+        {
+            currentTarget = pointB.position;
+            spriteRenderer.flipX = false;
+        }
+        else if (transform.position == pointB.position)
+        {
+            currentTarget = pointA.position;
+            spriteRenderer.flipX = true;
+        }
+
+        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+
+        if (transform.position == currentTarget)
+        {
+            animator.SetTrigger("Idle");
+        }
+    }
 
 }
