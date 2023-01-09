@@ -97,6 +97,7 @@ public class Player : MonoBehaviour, IDamageable
     public void TakeDamage()
     {
         Debug.Log("Player took damage");
+        //animator.SetTrigger("Death");
     }
 
 }

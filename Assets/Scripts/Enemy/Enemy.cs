@@ -17,9 +17,12 @@ public abstract class Enemy : MonoBehaviour
     protected SpriteRenderer spriteRenderer;
     protected bool gotHit = false;
     protected Player player;
+    protected bool isDead = false;
+    protected BoxCollider2D collider;
 
     public virtual void Init()
     {
+        collider = GetComponent<BoxCollider2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
@@ -36,7 +39,12 @@ public abstract class Enemy : MonoBehaviour
         {
             return;
         }
-        Movement();
+
+        if (!isDead)
+        {
+            Movement();
+        }
+
     }
 
     public virtual void Movement()
