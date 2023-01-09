@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IDamageable
 {
 
     Rigidbody2D rigidbody2D;
@@ -19,6 +19,8 @@ public class Player : MonoBehaviour
 
     [SerializeField]
     LayerMask groundLayer;
+
+    public int Health { get; set; }
 
     // Start is called before the first frame update
     void Start()
@@ -90,6 +92,12 @@ public class Player : MonoBehaviour
             pos.x = -0.7f;
             swordArcSpriteRenderer.transform.localPosition = pos;
         }
+    }
+
+    public void TakeDamage()
+    {
+        Debug.Log("Player took damage");
+        //animator.SetTrigger("Death");
     }
 
 }

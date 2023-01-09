@@ -15,11 +15,17 @@ public abstract class Enemy : MonoBehaviour
     protected Vector3 currentTarget;
     protected Animator animator;
     protected SpriteRenderer spriteRenderer;
+    protected bool gotHit = false;
+    protected Player player;
+    protected bool isDead = false;
+    protected BoxCollider2D collider;
 
     public virtual void Init()
     {
+        collider = GetComponent<BoxCollider2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+        player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
 
     private void Start()
@@ -29,11 +35,16 @@ public abstract class Enemy : MonoBehaviour
 
     public void Update()
     {
-        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle"))
+        if (animator.GetCurrentAnimatorStateInfo(0).IsName("Idle") && !animator.GetBool("InCombat"))
         {
             return;
         }
-        Movement();
+
+        if (!isDead)
+        {
+            Movement();
+        }
+
     }
 
     public virtual void Movement()
@@ -49,11 +60,45 @@ public abstract class Enemy : MonoBehaviour
             spriteRenderer.flipX = true;
         }
 
-        transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        if (!gotHit)
+        {
+            transform.position = Vector3.MoveTowards(transform.position, currentTarget, speed * Time.deltaTime);
+        }
+
+        CheckDistanceToPlayer();
 
         if (transform.position == currentTarget)
         {
             animator.SetTrigger("Idle");
+        }
+
+        FlipSpriteOnCombat();
+
+    }
+
+    void CheckDistanceToPlayer()
+    {
+        float distance = Vector3.Distance(player.transform.localPosition, transform.localPosition);
+        if (distance > 2f)
+        {
+            gotHit = false;
+            animator.SetBool("InCombat", false);
+        }
+    }
+
+    void FlipSpriteOnCombat()
+    {
+        Vector3 direction = player.transform.localPosition - transform.localPosition;
+        if (animator.GetBool("InCombat"))
+        {
+            if (direction.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else if (direction.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
         }
     }
 
