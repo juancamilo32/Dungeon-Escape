@@ -21,7 +21,6 @@ public abstract class Enemy : MonoBehaviour
     public virtual void Init()
     {
         animator = GetComponentInChildren<Animator>();
-        Debug.Log(animator.name);
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();
     }
@@ -64,6 +63,9 @@ public abstract class Enemy : MonoBehaviour
         {
             animator.SetTrigger("Idle");
         }
+
+        FlipSpriteOnCombat();
+
     }
 
     void CheckDistanceToPlayer()
@@ -73,6 +75,22 @@ public abstract class Enemy : MonoBehaviour
         {
             gotHit = false;
             animator.SetBool("InCombat", false);
+        }
+    }
+
+    void FlipSpriteOnCombat()
+    {
+        Vector3 direction = player.transform.localPosition - transform.localPosition;
+        if (animator.GetBool("InCombat"))
+        {
+            if (direction.x > 0)
+            {
+                spriteRenderer.flipX = false;
+            }
+            else if (direction.x < 0)
+            {
+                spriteRenderer.flipX = true;
+            }
         }
     }
 
