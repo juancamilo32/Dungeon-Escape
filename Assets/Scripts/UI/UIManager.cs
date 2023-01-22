@@ -8,6 +8,8 @@ public class UIManager : MonoBehaviour
 
     private static UIManager instance;
 
+    public GameObject[] lives;
+
     public static UIManager Instance
     {
         get
@@ -43,6 +45,15 @@ public class UIManager : MonoBehaviour
     public void UpdateGemCount(int count)
     {
         gemCountText.text = count.ToString();
+    }
+
+    public void UpdateHealth(int health)
+    {
+        if (health < 0)
+        {
+            return;
+        }
+        lives[health].SetActive(false);
     }
 
 }
