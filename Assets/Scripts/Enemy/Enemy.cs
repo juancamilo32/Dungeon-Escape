@@ -18,11 +18,11 @@ public abstract class Enemy : MonoBehaviour
     protected bool gotHit = false;
     protected Player player;
     protected bool isDead = false;
-    protected BoxCollider2D collider;
+    [SerializeField]
+    protected GameObject diamondPrefab;
 
     public virtual void Init()
     {
-        collider = GetComponent<BoxCollider2D>();
         animator = GetComponentInChildren<Animator>();
         spriteRenderer = GetComponentInChildren<SpriteRenderer>();
         player = GameObject.FindGameObjectWithTag("Player").GetComponent<Player>();

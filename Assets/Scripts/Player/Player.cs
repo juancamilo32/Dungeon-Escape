@@ -5,6 +5,8 @@ using UnityEngine;
 public class Player : MonoBehaviour, IDamageable
 {
 
+    public int diamonds = 0;
+
     Rigidbody2D rigidbody2D;
     PlayerAnimation playerAnimation;
     SpriteRenderer spriteRenderer;
@@ -98,6 +100,12 @@ public class Player : MonoBehaviour, IDamageable
     {
         Debug.Log("Player took damage");
         //animator.SetTrigger("Death");
+    }
+
+    public void AddGems(int amount)
+    {
+        diamonds += amount;
+        UIManager.Instance.UpdateGemCount(diamonds);
     }
 
 }

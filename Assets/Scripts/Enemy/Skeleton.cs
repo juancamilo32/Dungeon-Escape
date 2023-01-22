@@ -20,6 +20,10 @@ public class Skeleton : Enemy, IDamageable
 
     public void TakeDamage()
     {
+        if (isDead)
+        {
+            return;
+        }
         Health--;
         animator.SetTrigger("Hit");
         gotHit = true;
@@ -27,8 +31,9 @@ public class Skeleton : Enemy, IDamageable
         if (Health < 1)
         {
             isDead = true;
-            collider.enabled = false;
             animator.SetTrigger("Death");
+            GameObject diamond = Instantiate(diamondPrefab, transform.position, Quaternion.identity);
+            diamond.GetComponent<Diamond>().value = base.gems;
         }
     }
 
